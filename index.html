@@ -8,13 +8,21 @@
 </head>
 <body>
 	<script type="template" id="btn-tpl">
-	<div class="user-info"><% user.name %></div>
-	<button>立即<% data.do %></button>
+	<div class="user-info"><% this.user.name %></div>
+	<button>立即<% this.user.do %></button>
 	</script>
 
 
 	<script>
-	window.template("btn-tpl", {});
+	var obj  = {
+			user: {
+			name: "rose",
+			do: "支付"
+		}
+	};
+	
+	var rs = window.template("btn-tpl", obj);
+	console.log(rs);
 	</script>
 </body>
 </html>
