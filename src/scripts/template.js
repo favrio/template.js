@@ -1,4 +1,5 @@
 ((win) => {
+	/* jshint esnext: true, unused: true, evil: true */
 	// 匹配插值表达式
 	const reg = /<%([^%>]+)?%>/g;
 	// 匹配条件语句
@@ -63,7 +64,6 @@
 		let codeStr = "var rs = [];\n";
 		let position = 0;
 		let matcher;
-		let val;
 
 		while (matcher = reg.exec(tpl)) {
 			disposeLine(tpl.slice(position, matcher.index))(matcher[1], true);
@@ -75,7 +75,7 @@
 		codeStr = codeStr.replace(/[\r\t\n]/g, "");
 		console.log(codeStr);
 		return (new Function(codeStr).apply(data).join(""));
-	}
+	};
 
 	// 挂载到window下，对外暴露接口
 	win.template = (tpl, data) => {

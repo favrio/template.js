@@ -1,6 +1,7 @@
 "use strict";
 
 (function (win) {
+	/* jshint esnext: true, unused: true, evil: true */
 	// 匹配插值表达式
 	var reg = /<%([^%>]+)?%>/g;
 	// 匹配条件语句
@@ -63,7 +64,6 @@
 		var codeStr = "var rs = [];\n";
 		var position = 0;
 		var matcher = undefined;
-		var val = undefined;
 
 		while (matcher = reg.exec(tpl)) {
 			disposeLine(tpl.slice(position, matcher.index))(matcher[1], true);
