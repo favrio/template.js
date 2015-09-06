@@ -51,10 +51,10 @@
 		 */
 		let disposeLine = function(line, isLogic) {
 			if (isLogic) {
-				// codeStr += line + "\n";
-				codeStr += line.match(logicReg) ? line + "\n" : "rs.push('" + line + "');";
+				console.log("GO here");
+				codeStr += line.match(logicReg) ? line + ";\n" : "rs.push(" + util.trim(line) + ");";
 			} else {
-				codeStr += "rs.push(" + util.trim(line) + ");";
+				codeStr += "rs.push('" + util.trim(line) + "');";
 			}
 
 			return disposeLine;
@@ -66,11 +66,11 @@
 		let val;
 
 		while (matcher = reg.exec(tpl)) {
-			disposeLine(tpl.slice(position, matcher.index), true)(matcher[1]);
+			disposeLine(tpl.slice(position, matcher.index))(matcher[1], true);
 			position = matcher.index + matcher[0].length;
 		}
 
-		disposeLine(tpl.slice(position), true);
+		disposeLine(tpl.slice(position));
 		codeStr += "return rs;";
 		codeStr = codeStr.replace(/[\r\t\n]/g, "");
 		console.log(codeStr);
