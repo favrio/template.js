@@ -4,6 +4,10 @@
 	// 匹配条件语句
 	const logicReg = /(^( )?(if|for|else|switch|case|break|{|}))(.*)?/g;
 
+	/**
+	 * 工具对象
+	 * @type {Object}
+	 */
 	const util = {
 		/**
 		 * 获取模板字符串
@@ -22,46 +26,6 @@
 			return html;
 		},
 		/**
-		 * 主函数，渲染用
-		 * @param  {String} tpl  模板ID或者直接是模板字符串
-		 * @param  {Object} data 套用的变量对象
-		 * @return {String}      渲染完成的字符串
-		 */
-		render: function(tpl, data) {
-			/**
-			 * 逐条处理
-			 * @param  {String}  line    待处理的字符串
-			 * @param  {Boolean} isLogic 是否是逻辑命令
-			 * @return {[type]}          [description]
-			 */
-			let disposeLine = function(line, isLogic) {
-				if (isLogic) {
-					// codeStr += line + "\n";
-					codeStr += line.match(logicReg) ? line + "\n" : "rs.push('" + line + "');";
-				} else {
-					codeStr += "rs.push(" + line + ");";
-				}
-
-			};
-			let codeStr = "var rs = [];\n";
-			let position = 0;
-			let matcher;
-			let val;
-
-			while (matcher = reg.exec(tpl)) {
-				val = util.trim(matcher[1]);
-				console.log(val);
-				disposeLine(tpl.slice(position, matcher.index), true);
-				disposeLine(val);
-				position = matcher.index + matcher[0].length;
-			}
-			disposeLine(tpl.slice(position), true);
-			codeStr += "return rs;";
-			codeStr = codeStr.replace(/[\r\t\n]/g, "");
-			console.log(codeStr);
-			return (new Function(codeStr).apply(data).join(""));
-		},
-		/**
 		 * 清除空格
 		 * @param  {String} str 待处理的字符串
 		 * @return {String}     清除左右空格后的字符串
@@ -70,10 +34,54 @@
 			return str.replace(/(^\s*)|(\s*$)/g, "");
 		}
 	};
+
+
+	/**
+	 * 主函数，渲染用
+	 * @param  {String} tpl  模板ID或者直接是模板字符串
+	 * @param  {Object} data 套用的变量对象
+	 * @return {String}      渲染完成的字符串
+	 */
+	const render = (tpl, data) => {
+		/**
+		 * 逐条处理
+		 * @param  {String}  line    待处理的字符串
+		 * @param  {Boolean} isLogic 是否是逻辑命令
+		 * @return {Function}        返回方法自身，链式调用
+		 */
+		let disposeLine = function(line, isLogic) {
+			if (isLogic) {
+				// codeStr += line + "\n";
+				codeStr += line.match(logicReg) ? line + "\n" : "rs.push('" + line + "');";
+			} else {
+				codeStr += "rs.push(" + util.trim(line) + ");";
+			}
+
+			return disposeLine;
+
+		};
+		let codeStr = "var rs = [];\n";
+		let position = 0;
+		let matcher;
+		let val;
+
+		while (matcher = reg.exec(tpl)) {
+			disposeLine(tpl.slice(position, matcher.index), true)(matcher[1]);
+			position = matcher.index + matcher[0].length;
+		}
+
+		disposeLine(tpl.slice(position), true);
+		codeStr += "return rs;";
+		codeStr = codeStr.replace(/[\r\t\n]/g, "");
+		console.log(codeStr);
+		return (new Function(codeStr).apply(data).join(""));
+	}
+
+	// 挂载到window下，对外暴露接口
 	win.template = (tpl, data) => {
 		tpl = util.getTplStr(tpl);
-		return util.render(tpl, data);
+		return render(tpl, data);
 	};
 
 
-})(window)
+})(window);
