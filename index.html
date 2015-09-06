@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>template.js</title>
+	<link rel="stylesheet" href="dist/styles/main.css">
+	<script src="dist/scripts/template.js"></script>
+</head>
+<body>
+	<script type="template" id="btn-tpl">
+	<div class="user-info"><% user.name %></div>
+	<button>立即<% data.do %></button>
+	</script>
+
+
+	<script>
+	window.template("btn-tpl", {});
+	</script>
+</body>
+</html>
