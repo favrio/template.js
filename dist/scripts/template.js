@@ -53,7 +53,6 @@
    */
 		var disposeLine = function disposeLine(line, isLogic) {
 			if (isLogic) {
-				console.log("GO here");
 				codeStr += line.match(logicReg) ? line + ";\n" : "rs.push(" + util.trim(line) + ");";
 			} else {
 				codeStr += "rs.push('" + util.trim(line) + "');";
@@ -73,7 +72,6 @@
 		disposeLine(tpl.slice(position));
 		codeStr += "return rs;";
 		codeStr = codeStr.replace(/[\r\t\n]/g, "");
-		console.log(codeStr);
 		return new Function(codeStr).apply(data).join("");
 	};
 
