@@ -72,7 +72,9 @@
 		disposeLine(tpl.slice(position));
 		codeStr += "return rs;";
 		codeStr = codeStr.replace(/[\r\t\n]/g, "");
-		return (new Function(codeStr).apply(data).join(""));
+		codeStr = "with(data) {" + codeStr + "}";
+		console.log(codeStr);
+		return (new Function("data", codeStr)(data).join(""));
 	};
 
 	// 挂载到window下，对外暴露接口

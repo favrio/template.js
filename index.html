@@ -9,13 +9,13 @@
 <body>
 	<script type="template" id="btn-tpl">
 	
-	<% for(var i = 0;i<this.user.limit;i++) { %>
+	<% for(var i = 0;i<user.limit;i++) { %>
 		<div class="item">
-			<div class="user-info"><% this.user.name %></div>
-			<% if(this.user.name) { %>
+			<div class="user-info"><% user.name %></div>
+			<% if(user.name) { %>
 			有名字才会显示此段
 			<% } %>
-			<button>立即<% this.user.do %></button>
+			<button>立即<% user.do %></button>
 		</div>
 	<% } %>
 	</script>
