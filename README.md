@@ -9,18 +9,22 @@
 
 ```html
 <script type="template" id="btn-tpl">
-	<% for(var i = 0;i<this.user.limit;i++) { %>
-		<div class="user-info"><% this.user.name %></div>
-		<% if(this.user.name) { %>
+	<% for(var i = 0;i<user.limit;i++) { %>
+		<div class="user-info"><% user.name %></div>
+		<% if(user.name) { %>
 		有名字才会显示此段
 		<% } %>
-		<button>立即<% this.user.do %></button>
+		<button>立即<% user.do %></button>
 	<% } %>
 </script>
 ```
 
 也可以把模板放置到任何非html的地方，只要是以字符串形式传入template函数的模板，都能够被解析。
-*注意：目前插值表达式需要使用this.来开头，因为是使用的call来设置的作用域。*
+*注意：~~目前插值表达式需要使用this.来开头，因为是使用的call来设置的作用域~~*
+*目前已经无需使用this.进行插值了*
 
 `window.template(tpl, data)`接受2个参数，第一个为模板，可以是元素的ID也可以是字符串形式的模板，如为ID，模板引擎回去自动取其内容为模板字符串。第二个参数为套用的数据对象。
+
+##update
++ 2015-9-7 从call指定作用域，改为使用with改变作用域，所以在模板里面无需使用this.来进行插值。
 
