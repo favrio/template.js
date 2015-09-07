@@ -9,28 +9,35 @@
 <body>
 	<script type="template" id="btn-tpl">
 	
-	<% for(var i = 0;i<user.limit;i++) { %>
-		<div class="item">
-			<div class="user-info"><% user.name %></div>
-			<% if(user.name) { %>
-			有名字才会显示此段
+	<% for(var i = 0;i<users.length;i++) { %>
+		<div class="people">
+			<p><label>姓名：</label><% users[i].name %></p>
+			<p><label>年龄：</label><% users[i].age %></p>
+			<p><label>工作：</label><% users[i].work %></p>
+			<% if(users[i].special) { %>
+				<p class="special">对，没错，我就是那个“特别的”</p>
 			<% } %>
-			<button>立即<% user.do %></button>
 		</div>
 	<% } %>
 	</script>
 
 
 	<script>
-	var obj  = {
-			user: {
+	var users = [
+		{
 			name: "rose",
-			do: "支付",
-			limit: 4
+			age: 18,
+			work: "student"
+		},
+		{
+			name: "jack",
+			age: 20,
+			work: "备胎",
+			special: true
 		}
-	};
+	];
 	
-	var rs = window.template("btn-tpl", obj);
+	var rs = window.template("btn-tpl", users);
 	document.querySelector("body").innerHTML = rs;
 	</script>
 </body>
